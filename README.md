@@ -4,9 +4,9 @@ JavaScript reference implementation of [**matrix256v1**](https://github.com/shit
 
 **Private repository.** Not published to npm. The `package.json` carries `"private": true`; the GitHub remote (when added) must be configured private as well.
 
-## No dependencies
+## Dependencies
 
-Zero runtime dependencies. Zero dev dependencies. Pure JavaScript on the Node.js standard library:
+Zero runtime dependencies — pure JavaScript on the Node.js standard library:
 
 - `node:crypto` — SHA-256 (`createHash('sha256')`)
 - `node:fs` — directory walk, file metadata
@@ -14,9 +14,30 @@ Zero runtime dependencies. Zero dev dependencies. Pure JavaScript on the Node.js
 - `TextEncoder` / `TextDecoder` — UTF-8 with U+FFFD substitution per spec §2.2
 - `String.prototype.normalize('NFC')` — Unicode normalization per spec §2.2
 
-The JavaScript ecosystem is treated as a supply-chain risk; no third-party packages may be added without explicit justification. Type information is provided via JSDoc comments rather than TypeScript so that no build step (and therefore no `typescript` toolchain dependency) is required.
+Dev dependencies are scoped to linting (`eslint` + `eslint-plugin-jsdoc`) and enforce the [library discipline](#library-discipline) below. They live in `package.json` under `devDependencies`; consumers running `npm install matrix256-js` never see them. The JavaScript ecosystem is treated as a supply-chain risk; no third-party runtime packages may be added without explicit justification. Type information is provided via JSDoc comments rather than TypeScript so that no build step (and therefore no `typescript` toolchain dependency) is required.
 
 Node.js 18 or newer.
+
+## Library discipline
+
+The library promise is: **a consumer's process must never break because of code in this package.** The rules below are enforced by `eslint` (CI runs `npm run lint` on every push); a few rows are intent rules that still require code review.
+
+| Category | What's guarded | Enforced by |
+|---|---|---|
+| Code-injection safety | No `eval(...)`, no `new Function(...)`. Code is written at author time, never constructed at run time from data. | `no-eval`, `no-implied-eval`, `no-new-func` |
+| Throw discipline | No `process.exit(...)` from library code; no `node:assert` in library paths. Failures throw typed `Error` instances with messages, never bare strings, so callers can `instanceof`-check and re-throw. | `no-throw-literal` and `no-restricted-syntax` selectors for `process.exit` and `node:assert` imports |
+| Equality | `===` / `!==` only — no `==` / `!=`. No reliance on implicit `ToNumber` / `ToString` coercion of caller-supplied values. | `eqeqeq` |
+| Bounds checking | Out-of-bounds array/buffer access in JS returns `undefined` rather than throwing, which usually defers a confusing failure to a later call site. Length checks before indexing. | code review |
+| Output discipline | No `console.log` / `console.error` / `console.warn` from library code. A fingerprint call has no business producing output. | `no-console` |
+| Side effects at import | No top-level work beyond imports and constants. The single host-platform read (`process.platform` for the host separator byte in [`src/v1.js`](src/v1.js)) is the only environment touch at module load. | code review |
+| Documentation | Every public function carries a JSDoc block with `@param` and `@returns`. Public API stays self-describing without a TypeScript build step. | `jsdoc/require-jsdoc` (publicOnly), `jsdoc/require-param`, `jsdoc/require-returns` |
+
+Tests under [`tests/`](tests/) are exempt via a matching `files` block in [`eslint.config.js`](eslint.config.js) — they use `console.*` and `node:assert` freely, as Node's test idiom expects.
+
+```
+npm install     # install eslint + plugin into node_modules
+npm run lint    # run the discipline checks
+```
 
 ## Usage
 

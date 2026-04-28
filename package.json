@@ -10,12 +10,17 @@
   },
   "main": "./src/index.js",
   "scripts": {
-    "test": "node tests/generate_fixtures.js"
+    "test": "node tests/generate_fixtures.js",
+    "lint": "eslint ."
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "license": "UNLICENSED",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-jsdoc": "^50.0.0"
+  }
 }
