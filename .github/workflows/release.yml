@@ -1,0 +1,37 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify package.json version matches tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkgver=$(node -p "require('./package.json').version")
+          if [ "$tag" != "$pkgver" ]; then
+            echo "::error::tag $GITHUB_REF_NAME (parsed as $tag) does not match package.json version $pkgver"
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Publish with provenance
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
