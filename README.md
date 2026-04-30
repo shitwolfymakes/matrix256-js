@@ -2,8 +2,6 @@
 
 JavaScript reference implementation of [**matrix256v1**](https://github.com/shitwolfymakes/matrix256) — a SHA-256 fingerprint over the (path, size) records of a rooted filesystem tree.
 
-**Private repository.** Not published to npm. The `package.json` carries `"private": true`; the GitHub remote (when added) must be configured private as well.
-
 ## Dependencies
 
 Zero runtime dependencies — pure JavaScript on the Node.js standard library:
@@ -71,3 +69,7 @@ The script mirrors the construction logic of the Python sibling [`matrix256-py/t
 - `IMPLEMENTERS.md` — practical guidance (encoding, mount handling, bridge discs)
 - `CORPUS.md` — known-good digests across real discs
 - `CONFORMANCE_FIXTURES.md` / `conformance_fixtures.json` — Tier-1 synthetic fixture suite
+
+## License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full text. Apache 2.0 grants an explicit patent license alongside the copyright license and includes a patent-retaliation clause that terminates those patent rights if you sue any contributor over the Work.
