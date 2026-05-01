@@ -32,4 +32,11 @@ jobs:
       - run: npm ci
 
       - name: Publish with provenance
-        run: npm publish --provenance --access public
+        run: |
+          # setup-node exports NODE_AUTH_TOKEN (empty by default when no
+          # token is provided), which npm tries to use as a Bearer token
+          # instead of falling through to OIDC trusted publishing. The npm
+          # registry rejects the empty token and returns a misleading 404.
+          # Unsetting the variable forces npm to use OIDC.
+          unset NODE_AUTH_TOKEN
+          npm publish --provenance --access public
