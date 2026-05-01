@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Verify package.json version matches tag
@@ -32,11 +32,4 @@ jobs:
       - run: npm ci
 
       - name: Publish with provenance
-        run: |
-          # setup-node exports NODE_AUTH_TOKEN (empty by default when no
-          # token is provided), which npm tries to use as a Bearer token
-          # instead of falling through to OIDC trusted publishing. The npm
-          # registry rejects the empty token and returns a misleading 404.
-          # Unsetting the variable forces npm to use OIDC.
-          unset NODE_AUTH_TOKEN
-          npm publish --provenance --access public
+        run: npm publish --provenance --access public
