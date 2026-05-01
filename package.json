@@ -8,6 +8,10 @@
     "./v1": "./src/v1.js"
   },
   "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shitwolfymakes/matrix256-js.git"
+  },
   "scripts": {
     "test": "node tests/generate_fixtures.js",
     "lint": "eslint ."
