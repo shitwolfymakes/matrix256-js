@@ -1,5 +1,11 @@
 # matrix256-js
 
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/matrix256-js.svg)](https://www.npmjs.com/package/matrix256-js)
+[![npm downloads](https://img.shields.io/npm/dm/matrix256-js.svg)](https://www.npmjs.com/package/matrix256-js)
+[![conformance](https://github.com/shitwolfymakes/matrix256-js/actions/workflows/conformance.yml/badge.svg)](https://github.com/shitwolfymakes/matrix256-js/actions/workflows/conformance.yml)
+[![lint](https://github.com/shitwolfymakes/matrix256-js/actions/workflows/lint.yml/badge.svg)](https://github.com/shitwolfymakes/matrix256-js/actions/workflows/lint.yml)
+
 JavaScript reference implementation of [**matrix256v1**](https://github.com/shitwolfymakes/matrix256) — a SHA-256 fingerprint over the (path, size) records of a rooted filesystem tree.
 
 ## Dependencies
