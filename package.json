@@ -1,6 +1,6 @@
 {
   "name": "matrix256-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JavaScript reference implementation of matrix256v1 — a SHA-256 fingerprint over the (path, size) records of a rooted filesystem tree.",
   "author": "wolfy",
   "type": "module",
